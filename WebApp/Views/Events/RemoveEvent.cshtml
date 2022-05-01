@@ -1,0 +1,14 @@
+@model App.Domain.Event
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+Kustuta üritus @Model.EventName?
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Kustuta" /> |
+    <a asp-controller="Home" asp-action="Index">Tagasi esilehele</a>
+</form>

@@ -1,0 +1,54 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-item {
+  flex-grow: 1;
+}
+
+.image {
+  object-fit: contain;
+  height: 20px;
+  width: 40px;
+}
+
+.fixed {
+  width: 20px;
+}
+
+.flex-child {
+  flex: 1;
+  border: 2px solid black;
+}
+
+.flex-child:first-child {
+  margin-right: 20px;
+}
+
+.headline {
+  background-color: #0a58ca;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 20px;
+}

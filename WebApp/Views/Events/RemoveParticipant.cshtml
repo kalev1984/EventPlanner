@@ -1,0 +1,16 @@
+@model ParticipantVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+Kustuta osaleja @Model.Name?
+<form asp-action="RemoveParticipant">
+    <input type="hidden" asp-for="Id"/>
+    <input type="hidden" asp-for="Type"/>
+    <input type="hidden" asp-for="EventId"/>
+    <input type="submit" value="Kustuta" /> |
+    <a asp-controller="Events" asp-action="Event" asp-route-id="@Model.EventId">Tagasi Sündmusele</a>
+</form>

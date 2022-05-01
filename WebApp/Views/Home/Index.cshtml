@@ -1,0 +1,70 @@
+﻿@model IEnumerable<App.Domain.Event>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div class="flex-container">
+    
+    <div class="flex-child magenta">
+        <div class="headline">
+            Tulevased üritused
+        </div>
+        @{
+            var counter = 1;
+            foreach (var m in Model)
+            {
+                if (m.Time > DateTime.Now)
+                {
+                    <div class="flex-container">
+                        <div class="fixed">@counter.</div>
+                        <div class="flex-item">@m.EventName</div>
+                        <div class="flex-item">@m.Time</div>
+                        <div class="flex-item">
+                            <a asp-route-id="@m.Id" asp-controller="Events" asp-action="Event">Osavõtjad</a>
+                        </div>
+                        <div class="flex-item">
+                            <a asp-route-id="@m.Id" asp-controller="Events" asp-action="Remove"><img src="image/remove.svg"></a>
+                        </div>
+                    </div>
+                    counter++;
+                }
+            }
+        }
+        <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Add">Lisa üritus</a>
+    </div>
+    
+  
+  <div class="flex-child green">
+      <div class="headline">
+          Toimunud üritused
+      </div>
+      @{
+          counter = 1;
+          foreach (var m in Model)
+          {
+              @if (m.Time < DateTime.Now)
+              {
+                  {
+                      <div class="flex-container">
+                          <div class="fixed">@counter.</div>
+                          <div class="flex-item">@m.EventName</div>
+                          <div class="flex-item">@m.Time</div>
+                          <div class="flex-item">osavõtjad</div>
+                      </div>
+                      counter++;
+                  }
+              }
+          }
+      }
+  </div>
+  
+</div>
+</body>
+</html>

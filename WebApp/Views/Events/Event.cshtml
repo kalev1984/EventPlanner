@@ -1,0 +1,158 @@
+@model EventVM
+@{
+    Layout = "_Layout";
+}
+
+<html>
+<head>
+    <title>title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<h3 style="font-size: 20px; margin-bottom: 16px">Osavõtjad</h3>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label class="control-label" style="width: 100px; margin-bottom: 10px;">Ürituse nimi:</label>
+            <label class="control-label" style="padding-left: 25px; margin-bottom: 10px;">@Model.EventName</label>
+        </div>
+        <div class="form-group">
+            <label class="control-label" style="width: 100px; margin-bottom: 10px;">Toimumisaeg:</label>
+            <label class="control-label" style="padding-left: 25px; margin-bottom: 10px;">@Model.Time</label>
+        </div>
+        <div class="form-group">
+            <label class="control-label" style="width: 100px; margin-bottom: 10px;">Koht:</label>
+            <label class="control-label" style="padding-left: 25px; margin-bottom: 10px;">@Model.Place</label>
+        </div>
+        <div class="form-group">
+            <label class="control-label" style="width: 100px; margin-bottom: 10px;">Osavõtjad:</label>
+        </div>
+         @{
+            var counter = 1;
+            foreach (var m in Model.Participants)
+            {
+                <div class="flex-container">
+                    <div class="fixed">@counter.</div>
+                    <div class="flex-item">@m.Name</div>
+                    <div class="flex-item">@m.Identifier</div>
+                    <div class="flex-item">
+                        <a asp-route-id="@m.Id" asp-route-type="@m.Type" asp-route-eventid="@Model.EventId" asp-controller="Events" asp-action="Details">vaata</a>
+                    </div>
+                    <div class="flex-item">
+                        <a asp-route-id="@m.Id" asp-route-type="@m.Type" asp-route-eventid="@Model.EventId" asp-controller="Events" asp-action="RemoveParticipant">Kustuta</a>
+                    </div>
+                </div>
+                counter++;
+            }
+         }
+         <h3 style="font-size: 20px">Osavõtjate lisamine</h3>
+         
+         <div class="row">
+             <div class="col-md-4">
+                 <form asp-action="Event">
+                     @Html.ValidationSummary(false)
+                     <div class="form-group">
+                         @Html.HiddenFor(m => m.EventId)
+                         @Html.HiddenFor(m => m.EventName)
+                         @Html.HiddenFor(m => m.Place)
+                         <div style="width: 100% ;display: flex; align-items: center; border: 20px; padding-right: 20px">
+                            @Html.RadioButtonFor(m => m.ClientType, "Eraisik", new {Checked="checked"}) Eraisik
+                            @Html.RadioButtonFor(m => m.ClientType, "Ettevõte", false) Ettevõte
+                            @Html.ValidationMessageFor(m => m.ClientType, "")
+                        </div>
+                     </div>
+                     <div style="display: flex">
+                         @Html.LabelFor(l => l.Name, "Eesnimi: ",
+                             new { id = "eesnimi", style = "width: 150px; margin-top: 5px; margin-bottom: 5px;" })
+                         @Html.LabelFor(l => l.Name, "Juriidiline nimi: ",
+                             new { id = "firmanimi", style = "display: none; width: 150px; margin-top: 5px; margin-bottom: 5px;" })
+                         @Html.TextBoxFor(t => t.Name,
+                             new { style = "margin: 15px; width: 100px; margin-left: 300px; width: 500px;" })
+                         @Html.ValidationMessageFor(m => m.Name)
+                     </div>
+                     <div style="display: flex">
+                         @Html.LabelFor(l => l.Name, "Perenimi: ",
+                             new { id = "perenimi", style = "width: 150px; margin-top: 5px; margin-bottom: 5px;" })
+                         @Html.LabelFor(l => l.Name, "Registrikood: ",
+                             new { id = "registrikood", style = "display: none; width: 150px; margin-top: 5px; margin-bottom: 5px;" })
+                         @Html.TextBoxFor(t => t.Identifier,
+                             new { style = "margin: 15px; width: 100px; margin-left: 300px; width: 500px;" })
+                         @Html.ValidationMessageFor(m => m.Identifier)
+                     </div>
+                     <div style="display: flex">
+                         @Html.LabelFor(l => l.Name, "Isikukood: ",
+                             new { id = "isikukood", style = "width: 150px; margin-top: 5px; margin-bottom: 5px;" })
+                         @Html.LabelFor(l => l.Name, "Osalejate arv: ",
+                             new { id = "osalejad", style = "display: none; width: 150px; margin-top: 5px; margin-bottom: 5px;" })
+                         @Html.TextBoxFor(t => t.Number,
+                             new { style = "margin: 15px; width: 100px; margin-left: 300px; width: 500px;" })
+                         @Html.ValidationMessageFor(m => m.Number)
+                     </div>
+                     <div style="display: flex">
+                         @Html.LabelFor(l => l.Name, "Maksmisviis: ",
+                             new { id = "payment", style = "width: 150px; margin-top: 5px; margin-bottom: 5px;" })
+                         @Html.DropDownListFor(x => x.Payment,
+                             new SelectList(
+                                 new List<Object>
+                                 {
+                                     new { value = "Sularaha", text = "Sularaha" },
+                                     new { value = "Pangaülekanne", text = "Pangaülekanne" }
+                                 }, "value", "text", Model.Payment), "- please select -",
+                             new { style = "margin: 15px; width: 100px; margin-left: 300px; width: 500px;" })
+                         @Html.ValidationMessageFor(m => m.Payment)
+                     </div>
+                     <div style="display: flex">
+                         @Html.LabelFor(l => l.Name, "Kommentaar: ",
+                             new { style = "width: 150px; margin-top: 5px; margin-bottom: 5px;" })
+                         @Html.TextBoxFor(t => t.Comment,
+                             new { id = "kommentaar", style = "margin: 15px; height = 75px; width = 300px ; margin-left: 300px;" })
+                         @Html.ValidationMessageFor(m => m.Comment)
+                     </div>
+
+                     <script>
+                          $(document).ready(function() {
+                              let maxChars = 1500;
+                              $('input[type=radio]').on('change', function() {
+                                  let radio = $('input[type=radio]:checked').val();
+                                  if (radio === 'Eraisik') {
+                                      $('#eesnimi').show();
+                                      $('#firmanimi').hide();
+                                      $('#perenimi').show();
+                                      $('#registrikood').hide();
+                                      $('#isikukood').show();
+                                      $('#osalejad').hide();
+                                      maxChars = 1500;
+                                  }
+                                  else if (radio === 'Ettevõte') {
+                                      $('#eesnimi').hide();
+                                      $('#firmanimi').show();
+                                      $('#perenimi').hide();
+                                      $('#registrikood').show();
+                                      $('#isikukood').hide();
+                                      $('#osalejad').show();
+                                      maxChars = 5000;
+                                  }
+                              });
+                              $('#kommentaar').unbind('keyup change input paste').bind('keyup change input paste',function(){
+                                let $this = $(this);
+                                let val = $this.val();
+                                let valLength = val.length;
+                                if(valLength>maxChars){
+                                    $this.val($this.val().substring(0,maxChars));
+                                }
+                            });
+                          });
+                       </script>
+                     <div class="form-group">
+                         <input type="submit" value="Lisa" class="btn btn-primary"/>
+                     </div>
+                 </form>
+             </div>
+        </div>
+        <div>
+         <a asp-controller="Home" asp-action="Index">Tagasi</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
