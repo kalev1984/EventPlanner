@@ -1,5 +1,5 @@
 # Prerequirements:
-C# IDE(Rider, VS)
+Optional: C# IDE(Rider, VS, etc)  
 
 .NET Core SDK
 ## How To Run:
