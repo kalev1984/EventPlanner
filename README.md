@@ -1,5 +1,6 @@
 # Prerequirements:
 C# IDE(Rider, VS)
+
 .NET Core SDK
 ## How To Run:
 clone and open project folder
